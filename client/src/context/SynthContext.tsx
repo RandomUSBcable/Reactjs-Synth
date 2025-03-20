@@ -5,6 +5,7 @@ import { SynthState, SynthContextType } from "../models/SynthStateModel";
 
 // === Initial State ===
 export const initialState: SynthState = {
+  mode: "polyphonic",
   bpm: 120,
   oscillators: Array.from({ length: 4 }, () => ({
     type: "sine",
@@ -12,11 +13,11 @@ export const initialState: SynthState = {
     unisonDetune: 0,
     velocitySensitivity: 100,
   })),
-  mixer: {
-    volumes: Array(4).fill(100),
-    mutes: Array(4).fill(false),
-    solos: Array(4).fill(false),
-  },
+  mixer: Array.from({ length: 3 }, () => ({
+    volumes: 50,
+    mutes: false,
+    solos: false,
+  })),
   filters: Array.from({ length: 3 }, () => ({
     type: "lowpass",
     depth: 12,
@@ -117,17 +118,17 @@ export const SynthProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   // === Update Keyboard Mode ===
-  const updateKeyboard = (updates: Partial<SynthState["keyboard"]>) => {
-    setState((prevState) => ({
-      ...prevState,
-      keyboard: { ...prevState.keyboard, ...updates },
-    }));
-  };
+  // const updateKeyboard = (updates: Partial<SynthState["keyboard"]>) => {
+  //   setState((prevState) => ({
+  //     ...prevState,
+  //     keyboard: { ...prevState.keyboard, ...updates },
+  //   }));
+  // };
 
   // === Update Active Notes ===
-  const setActiveNotes = (notes: number[]) => {
-    setState((prevState) => ({ ...prevState, activeNotes: notes }));
-  };
+  // const setActiveNotes = (notes: number[]) => {
+  //   setState((prevState) => ({ ...prevState, activeNotes: notes }));
+  // };
 
   const triggerNote = (note: string) => {
     setState((prev) => {
@@ -150,14 +151,16 @@ export const SynthProvider: React.FC<{ children: React.ReactNode }> = ({
       value={{
         state,
         setState,
+        triggerNote,
+        releaseNote,
         updateBPM,
         updateOscillator,
         updateMixer,
         updateFilter,
         updateEnvelope,
         updateLFO,
-        updateKeyboard,
-        setActiveNotes,
+        // updateKeyboard,
+        // setActiveNotes,
       }}
     >
       {children}

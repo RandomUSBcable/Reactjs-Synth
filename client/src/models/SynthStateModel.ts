@@ -3,8 +3,7 @@ import MixerChannel from './MixerModel';
 import Filter from './FilterModel';
 import Envelope from './EnvelopeModel';
 import LFO from './LFOModel';
-import KeyboardState from './KeyboardModel'
-
+// import KeyboardState from './KeyboardModel'
 
 export interface SynthState {
     mode: 'monophonic' | 'polyphonic';
@@ -14,7 +13,6 @@ export interface SynthState {
     filters: Filter[];
     envelopes: Envelope[];
     lfos: LFO[];
-    keyboard: KeyboardState;
     activeNotes: Set<string>;
   }
   
@@ -29,7 +27,7 @@ export interface SynthContextType {
     updateFilter: (index: number, updates: Partial<SynthState['filters'][number]>) => void;
     updateEnvelope: (index: number, updates: Partial<SynthState['envelopes'][number]>) => void;
     updateLFO: (index: number, updates: Partial<SynthState['lfos'][number]>) => void;
-    updateKeyboard: (updates: Partial<SynthState['keyboard']>) => void;
-    setActiveNotes: (notes: number[]) => void;
+    // updateKeyboard: (updates: Partial<SynthState['keyboard']>) => void;
+    // setActiveNotes: (notes: number[]) => void;
   }
   
