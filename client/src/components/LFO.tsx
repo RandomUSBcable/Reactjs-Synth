@@ -55,7 +55,7 @@ const LFO: React.FC<{ index: number }> = ({ index }) => {
         <div>
           <label> Sync Interval: </label>
           <select
-            value={lfo.syncInterval}
+            value={lfo.rate}
             onChange={(e) => handleChange("syncInterval", e.target.value)}
           >
             {["1/16", "1/16.", "1/8", "1/8.", "1/4", "1/4."].map((interval) => (
@@ -72,10 +72,10 @@ const LFO: React.FC<{ index: number }> = ({ index }) => {
             type="range"
             min="10"
             max="10000"
-            value={lfo.time}
+            value={lfo.rate}
             onChange={(e) => handleChange("time", Number(e.target.value))}
           />
-          <span>{lfo.time} ms</span>
+          <span>{lfo.rate} ms</span>
         </div>
       )}
     </div>

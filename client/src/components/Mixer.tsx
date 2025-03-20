@@ -1,55 +1,40 @@
 import React from "react";
 import { useSynth } from "../context/SynthContext";
+import MixerType from "../models/MixerModel";
 
-const Mixer: React.FC = () => {
-  const { mixer, setState } = useSynth();
+interface MixerProps {
+  index: number;
+  label: string;
+}
 
-  const handleVolumeChange = (index: number, value: number) => {
-    setState((state) => {
-      const newMixer = [...state.mixer];
-      newMixer[index].volume = value;
-      return { mixer: newMixer };
-    });
-  };
+const Mixer: React.FC<MixerProps> = ({ index, label }) => {
+  const { state, updateMixer } = useSynth();
+  const mixer = state.mixer[index];
 
-  const toggleMute = (index: number) => {
-    setState((state) => {
-      const newMixer = [...state.mixer];
-      newMixer[index].mute = !newMixer[index].mute;
-      return { mixer: newMixer };
-    });
-  };
-
-  const toggleSolo = (index: number) => {
-    setState((state) => {
-      const newMixer = [...state.mixer];
-      newMixer[index].solo = !newMixer[index].solo;
-      return { mixer: newMixer };
-    });
+  const handleChange = (param: keyof MixerType, value: number | boolean) => {
+    updateMixer(index, { [param]: value });
   };
 
   return (
-    <div>
-      <h2>Mixer</h2>
-      {mixer.map((channel, index) => (
-        <div key={index}>
-          <h3>Oscillator {index + 1}</h3>
-          <label>Volume: </label>
-          <input
-            type="range"
-            min="0"
-            max="100"
-            value={channel.volume}
-            onChange={(e) => handleVolumeChange(index, Number(e.target.value))}
-          />
-          <button onClick={() => toggleMute(index)}>
-            {channel.mute ? "Unmute" : "Mute"}
-          </button>
-          <button onClick={() => toggleSolo(index)}>
-            {channel.solo ? "Unsolo" : "Solo"}
-          </button>
-        </div>
-      ))}
+    <div className="mixer">
+      <h3>{label}</h3>
+      <label>
+        Volume:
+        <input
+          type="range"
+          min="0"
+          max="1"
+          step="0.01"
+          value={mixer.volume}
+          onChange={(e) => handleChange("volume", parseFloat(e.target.value))}
+        />
+      </label>
+      <button onClick={() => handleChange("mute", !mixer.mute)}>
+        {mixer.mute ? "Unmute" : "Mute"}
+      </button>
+      <button onClick={() => handleChange("solo", !mixer.solo)}>
+        {mixer.solo ? "Unsolo" : "Solo"}
+      </button>
     </div>
   );
 };

@@ -1,5 +1,5 @@
 export default interface MixerChannel {
-    volume: number;
-    mute: boolean;
-    solo: boolean;
+    volumes: number[];
+    mutes: boolean[];
+    solos: boolean[];
   }

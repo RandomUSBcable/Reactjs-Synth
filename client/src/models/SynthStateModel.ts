@@ -7,6 +7,7 @@ import KeyboardState from './KeyboardModel'
 
 
 export interface SynthState {
+    mode: 'monophonic' | 'polyphonic';
     bpm: number;
     oscillators: Oscillator[];
     mixer: MixerChannel[];
@@ -14,12 +15,14 @@ export interface SynthState {
     envelopes: Envelope[];
     lfos: LFO[];
     keyboard: KeyboardState;
-    activeNotes: number[];
+    activeNotes: Set<string>;
   }
   
 export interface SynthContextType {
     state: SynthState;
     setState: React.Dispatch<React.SetStateAction<SynthState>>;
+    triggerNote: (note: string) => void;
+    releaseNote: (note: string) => void;
     updateBPM: (bpm: number) => void;
     updateOscillator: (index: number, updates: Partial<SynthState['oscillators'][number]>) => void;
     updateMixer: (index: number, updates: Partial<SynthState['mixer'][number]>) => void;

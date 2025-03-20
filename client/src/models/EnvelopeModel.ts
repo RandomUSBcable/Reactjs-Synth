@@ -5,4 +5,6 @@ export default interface Envelope {
     decay: number;
     sustain: number;
     release: number;
+    sustainSlope?: number;
+    releaseSlope?: number;
   }

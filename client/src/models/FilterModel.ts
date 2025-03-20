@@ -1,6 +1,6 @@
 export default interface Filter {
     type: 'highpass' | 'lowpass' | 'bandpass';
-    depth: '6db/o' | '12db/o' | '24db/o';
+    depth: 6 | 12 | 24;
     cutoff: number;
     resonance: number;
   }

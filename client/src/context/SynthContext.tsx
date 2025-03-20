@@ -12,14 +12,14 @@ export const initialState: SynthState = {
     unisonDetune: 0,
     velocitySensitivity: 100,
   })),
-  mixer: Array.from({ length: 4 }, () => ({
-    volume: 0.5,
-    mute: false,
-    solo: false,
-  })),
+  mixer: {
+    volumes: Array(4).fill(100),
+    mutes: Array(4).fill(false),
+    solos: Array(4).fill(false),
+  },
   filters: Array.from({ length: 3 }, () => ({
     type: "lowpass",
-    depth: "12db/o",
+    depth: 12,
     cutoff: 1000,
     resonance: 1.0,
   })),
@@ -31,15 +31,13 @@ export const initialState: SynthState = {
     sustain: 0.8,
     release: 0.5,
   })),
-  lfos: Array.from({ length: 2 }, () => ({
+  lfos: Array(2).fill({
     type: "sine",
     depth: 50,
     mode: "sync",
-    syncInterval: "1/8",
-    time: 500,
-  })),
-  keyboard: { mode: "monophonic", hold: false },
-  activeNotes: [],
+    rate: 1 / 4,
+  }),
+  activeNotes: new Set<string>(),
 };
 
 // === Create Context ===
@@ -129,6 +127,22 @@ export const SynthProvider: React.FC<{ children: React.ReactNode }> = ({
   // === Update Active Notes ===
   const setActiveNotes = (notes: number[]) => {
     setState((prevState) => ({ ...prevState, activeNotes: notes }));
+  };
+
+  const triggerNote = (note: string) => {
+    setState((prev) => {
+      const updatedNotes = new Set(prev.activeNotes);
+      updatedNotes.add(note);
+      return { ...prev, activeNotes: updatedNotes };
+    });
+  };
+
+  const releaseNote = (note: string) => {
+    setState((prev) => {
+      const updatedNotes = new Set(prev.activeNotes);
+      updatedNotes.delete(note);
+      return { ...prev, activeNotes: updatedNotes };
+    });
   };
 
   return (
